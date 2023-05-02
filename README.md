@@ -1,5 +1,5 @@
 # `paste-notion-urls`
-Copy & paste Notion urls in Slack, GitHub, or any tool suporting markdown urls.
+Copy & paste Notion urls in Slack, GitHub, or any tool supporting markdown urls.
 
 <img width="700" alt="Screenshots of the tool" src="https://user-images.githubusercontent.com/5550241/235761188-edc5e524-f169-481d-aeb5-a8579c65daef.png">
 
