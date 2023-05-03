@@ -11,8 +11,8 @@ Generates links like [✅ My todo](https://www.notion.so/licarth/My-todo-a80d4d5
 1. Go to the extension’s `Dashboard` > `Utilities` > `Import from URL`. 
 Paste this link `https://raw.githubusercontent.com/licarth/paste-notion-urls/main/tampermonkey-script.js` and click Install.
 1. Go (or refresh) to a Notion page, click on top-right “Copy Formatted URL” on the top right.
-1. You can paste your link in Slack with cmd/ctrl + V
-1. You can paste your links in Markdown format (for GitHub issues) with maj + cmd/ctrl + V
+1. You can paste your link in Slack with `cmd/ctrl + V`
+1. You can paste your links in Markdown format (for GitHub issues) with `maj + cmd/ctrl + V`
 
 ## Contribute
 Contributions are welcome. Issues are in [this GitHub project](https://github.com/licarth/paste-notion-urls/issues).
