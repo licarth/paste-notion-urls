@@ -46,7 +46,7 @@ function createMarkdownIconSVG() {
   iconSvg.classList.add("link");
   iconSvg.setAttribute(
     "style",
-    `width: 14px; height: 14px; display: block; flex-shrink: 0; backface-visibility: hidden; margin-left: 0px; color: ${textColor};`
+    `width: 20px; height: 20px; display: block; flex-shrink: 0; backface-visibility: hidden; margin-left: 0px; color: ${textColor};`
   );
 
   iconPath.setAttribute(
@@ -120,8 +120,8 @@ align-items: center;
   );
 
   GM_addStyle(`
-    #copyUrlButtonMain:hover {
-      background-color: ${backgroundColorOnHover} !important;
+    #copyUrlButtonMain:hover,#copyUrlButtonPeek:hover {
+        background-color: ${backgroundColorOnHover} !important;
     }
 `);
 
