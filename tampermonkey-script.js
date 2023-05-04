@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Well-formatted Notion URLs to your clipboard
 // @namespace    https://gist.github.com/licarth
-// @version      0.2
+// @version      0.3.0
 // @description  Adds a button to copy/paste a nicely formatted link to the current Notion page. Paste it in Slack, GitHub, or anywhere that supports text/helm Clipboard items. Paste as value for markdown version.
 // @author       licarth
 // @match        https://www.notion.so/*
@@ -16,6 +16,8 @@
 
 "use strict";
 const INITIAL_BUTTON_TEXT = "Copy Formatted URL";
+
+const IS_DARK_MODE = document.body.classList.contains("dark");
 
 function getPeekPreviewParent(element) {
   return element.closest(".notion-peek-renderer");
@@ -38,8 +40,11 @@ function displayButton(elements) {
   linkDiv.setAttribute("role", "button");
   linkDiv.setAttribute(
     "style",
-    "user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; flex-shrink: 0; white-space: nowrap; height: 28px; border-radius: 3px; font-size: 14px; line-height: 1.2; min-width: 0px; padding-left: 8px; padding-right: 8px; color: rgba(255, 255, 255, 0.81); margin-right: 2px;"
+    "user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; flex-shrink: 0; white-space: nowrap; height: 28px; border-radius: 3px; font-size: 14px; line-height: 1.2; min-width: 0px; padding-left: 8px; padding-right: 8px; margin-right: 2px;"
   );
+  linkDiv.style.color = IS_DARK_MODE
+    ? "rgba(255, 255, 255, 0.81)"
+    : "rgb(55, 53, 47)";
 
   el.parentNode.appendChild(linkDiv);
 
