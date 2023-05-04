@@ -1,7 +1,7 @@
 # `paste-notion-urls`
 Copy & paste Notion urls in Slack, GitHub, or any tool supporting markdown urls.
 
-<img width="700" alt="Screenshots of the tool" src="https://user-images.githubusercontent.com/5550241/235761188-edc5e524-f169-481d-aeb5-a8579c65daef.png">
+<img width="860" alt="Tool Screenshot" src="https://user-images.githubusercontent.com/5550241/236143571-e2158c93-cde1-4024-aced-dd6f85831952.png">
 
 Generates links like [✅ My todo](https://www.notion.so/licarth/My-todo-a80d4d568d894094af7094216cdd4258) in GitHub issues.
 
