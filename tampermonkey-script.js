@@ -128,13 +128,23 @@ align-items: center;
   el.parentNode.insertBefore(linkDiv, el.parentNode.firstChild);
 
   if (peekPreview) {
+    addKeyboardShortcut(onButtonClickPeek);
     document
       .getElementById("copyUrlButtonPeek")
       .addEventListener("click", () => onButtonClickPeek(el), false);
   } else {
+    addKeyboardShortcut(onButtonClickMain);
     document
       .getElementById("copyUrlButtonMain")
       .addEventListener("click", () => onButtonClickMain(el), false);
+  }
+
+  function addKeyboardShortcut(callback) {
+    document.addEventListener("keydown", (event) => {
+      if (event.ctrlKey && event.shiftKey && event.code === "KeyC") {
+        callback(el)
+      }
+    });
   }
 
   function onButtonClickMain(element) {
