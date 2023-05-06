@@ -141,7 +141,7 @@ align-items: center;
 
   function addKeyboardShortcut(callback) {
     document.addEventListener("keydown", (event) => {
-      if (event.ctrlKey && event.shiftKey && event.code === "KeyC") {
+      if (event.altKey && event.metaKey && event.shiftKey && event.code === "KeyL") {
         callback(el)
       }
     });
