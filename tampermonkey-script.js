@@ -311,7 +311,7 @@ GM_addStyle(`
   text-align: center;
   font-weight: 700;
   line-height: 1;
-  padding: 5px 0 4px 5px;
+  padding: 5px 0;
   margin: 0 6px 20px 0;
   background-color: #b4b4b4;
   height: 40px;
