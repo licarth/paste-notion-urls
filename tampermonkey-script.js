@@ -20,6 +20,22 @@ const INITIAL_BUTTON_TEXT = "link";
 
 const IS_DARK_MODE = document.body.classList.contains("dark");
 
+const DEFAULT_SHORTCUT = {
+  shortcutKey: {
+    code: 'KeyL',
+    key: 'l'
+  },
+  shortcutModifiers: {
+    shift: { symbol: "⇧", key: "shiftKey", pressed: true },
+    control: { symbol: "⌃", key: "ctrlKey", pressed: false },
+    option: { symbol: "⌥", key: "altKey", pressed: true },
+    command: { symbol: "⌘/⊞", key: "metaKey", pressed: true },
+  }
+}
+
+const STORED_SHORTCUT = JSON.parse(localStorage.getItem('shortcut'));
+const currentShortcut = STORED_SHORTCUT ? STORED_SHORTCUT : DEFAULT_SHORTCUT;
+
 const textColor = IS_DARK_MODE
   ? "rgba(255, 255, 255, 0.81)"
   : "rgb(55, 53, 47)";
@@ -139,9 +155,16 @@ align-items: center;
       .addEventListener("click", () => onButtonClickMain(el), false);
   }
 
+  function isCurrentShortcutPressed(event) {
+    return event.code === currentShortcut.shortcutKey.code
+      && Object.entries(currentShortcut.shortcutModifiers)
+        .every(([_, modifier]) => modifier.pressed === event[modifier.key])
+
+  }
+
   function addKeyboardShortcut(callback) {
     document.addEventListener("keydown", (event) => {
-      if (event.altKey && event.metaKey && event.shiftKey && event.code === "KeyL") {
+      if (isCurrentShortcutPressed(event)) {
         callback(el)
       }
     });
