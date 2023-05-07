@@ -10,6 +10,7 @@
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant GM_addStyle
 // @updateURL    https://raw.githubusercontent.com/licarth/paste-notion-urls/main/tampermonkey-script.js
+// @grant        GM_registerMenuCommand
 // @downloadURL  https://raw.githubusercontent.com/licarth/paste-notion-urls/main/tampermonkey-script.js
 // ==/UserScript==
 
@@ -237,3 +238,48 @@ function copyLinkToPage(emoji, title, href, textDiv) {
 (function () {
   waitForKeyElements(".notion-topbar-share-menu", displayButton, false);
 })();
+
+
+function buildModalBackdrop() {
+  const backdrop = document.createElement('div');
+  backdrop.classList.add("backdrop");
+  return backdrop;
+}
+
+function buildModal() {
+  const modal = document.createElement('div');
+  modal.classList.add("modal");
+  return modal;
+}
+function buildModalButtons(tempShortcut, backdrop) {
+}
+
+function buildShortcutSetting(tempShortcut) {
+};
+
+function showSettingsModal() {
+  const tempShortcut = {
+    shortcutKey: currentShortcut.shortcutKey,
+    shortcutModifiers: currentShortcut.shortcutModifiers
+  }
+
+  // Build the modal elements
+  const backdrop = buildModalBackdrop();
+  const modal = buildModal();
+  const shortcutSetting = buildShortcutSetting(tempShortcut);
+  const { saveButton, cancelButton } = buildModalButtons(tempShortcut, backdrop);
+
+  // Assemble elements in DOM
+  document.body.appendChild(backdrop);
+  backdrop.appendChild(modal);
+
+  modal.appendChild(shortcutSetting);
+  modal.appendChild(saveButton);
+  modal.appendChild(cancelButton);
+
+  modal.focus();
+}
+
+
+// Add a menu command to open the setting
+GM_registerMenuCommand("Set copy shortcut", showSettingsModal);
