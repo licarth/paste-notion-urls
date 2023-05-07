@@ -40,6 +40,11 @@ const currentShortcut = STORED_SHORTCUT ? STORED_SHORTCUT : DEFAULT_SHORTCUT;
 const textColor = IS_DARK_MODE
   ? "rgba(255, 255, 255, 0.81)"
   : "rgb(55, 53, 47)";
+
+const backgroundColor = IS_DARK_MODE
+  ? "rgba(31, 31, 31)"
+  : "rgba(246, 245, 241)"
+
 const backgroundColorOnHover = IS_DARK_MODE
   ? "rgba(255, 255, 255, 0.055)"
   : "rgba(55, 53, 47, 0.08)";
@@ -240,6 +245,106 @@ function copyLinkToPage(emoji, title, href, textDiv) {
 })();
 
 
+/*
+Setting Modal
+*/
+
+GM_addStyle(`
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  backdrop-filter: blur(5px);
+}
+
+.modal {
+  position: sticky;
+  top: 0;
+  width: 350px;
+  margin: 0 auto;
+  background-color: ${backgroundColor};
+  border-radius:  0 0 8px 8px;
+  z-index: 9999;
+  padding: 50px 70px;
+}
+
+
+
+.modalButton {
+  display: block;
+  width: 100%;
+  padding: 5px 0;
+  margin: 15px 0;
+  background-color: ${backgroundColor};
+  color: ${textColor};
+  border: solid 1px grey;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modalButton:hover {
+  border-color: transparent;
+  background-color: ${backgroundColorOnHover};
+}
+
+.settingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.settingLabel {
+  color: #b4b4b4;
+  padding-bottom: 25px;
+  text-align: center;
+  min-width: 50px;
+  width: 100%;
+}
+
+.keyInput,
+.modifierButton {
+  font-size: 0.85em;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1;
+  padding: 5px 0 4px 5px;
+  margin: 0 6px 20px 0;
+  background-color: #b4b4b4;
+  height: 40px;
+}
+
+.modifierButton {
+  font-weight: 900;
+  min-width: 40px;
+  border-radius: 3px;
+  border: 1px solid #b4b4b4;
+}
+
+.keyInput {
+  min-width: 50px;
+  width: 100%;
+  caret-color: #b4b4b4;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.keyInput:blur,
+.inactive {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+.keyInput:focus,
+.active {
+  box-shadow: 0 -3px 0 0 #ef4b4b inset, 0 0 3px #b4b4b4;
+  border: 1px solid #b4b4b4;
+}`);
+
 function buildModalBackdrop() {
   const backdrop = document.createElement('div');
   backdrop.classList.add("backdrop");
@@ -251,10 +356,88 @@ function buildModal() {
   modal.classList.add("modal");
   return modal;
 }
+
+function isShortcutValid(shortcut) {
+  return shortcut.shortcutKey.code && shortcut.shortcutKey.key
+    && Object.entries(shortcut.shortcutModifiers).filter(([_, { pressed }]) => pressed).length > 0;
+}
+
 function buildModalButtons(tempShortcut, backdrop) {
+  function createButton(textContent, callback) {
+    const button = document.createElement('button');
+    button.textContent = textContent;
+    button.classList.add("modalButton");
+    button.addEventListener('click', callback)
+    return button;
+  }
+
+  const saveButton = createButton('save', () => {
+    if (isShortcutValid(tempShortcut)) {
+      localStorage.setItem('shortcut', JSON.stringify(tempShortcut));
+      currentShortcut = tempShortcut;
+      backdrop.remove()
+    } else {
+      alert('Invalid shortcut: set at least one modifier and a key');
+    }
+  });
+  const cancelButton = createButton('cancel', () => backdrop.remove());
+  return ({ saveButton, cancelButton });
 }
 
 function buildShortcutSetting(tempShortcut) {
+  // Setting container
+  const shortcutSettingContainer = document.createElement('div');
+  shortcutSettingContainer.classList.add("settingContainer");
+
+  // Setting label
+  const shortcutSettingLabel = document.createElement('span');
+  shortcutSettingLabel.innerHTML = 'Select modifiers and enter a key'
+  shortcutSettingLabel.classList.add("settingLabel");
+  shortcutSettingContainer.appendChild(shortcutSettingLabel);
+
+  // Setting keys
+  function buildModifierButton(modifier) {
+    const key = document.createElement('button');
+    key.classList.add("modifierButton");
+    key.classList.add(modifier.pressed ? 'active' : 'inactive');
+    key.addEventListener('click', () => {
+      modifier.pressed = !modifier.pressed;
+      key.classList.remove(modifier.pressed ? 'inactive' : 'active');
+      key.classList.add(modifier.pressed ? 'active' : 'inactive');
+    })
+    key.innerHTML = modifier.symbol;
+    shortcutSettingContainer.appendChild(key);
+  }
+
+  function buildKeyInput() {
+    const input = document.createElement('input');
+    input.setAttribute("placeholder", 'Key...');
+    input.setAttribute("autocomplete", 'off');
+    input.value = tempShortcut.shortcutKey.key;
+    input.classList.add("keyInput");
+    input.addEventListener('click', () => {
+      tempShortcut.shortcutKey = {
+        code: '',
+        key: ''
+      };
+      input.value = '';
+    })
+    input.addEventListener('keydown', (event) => {
+      tempShortcut.shortcutKey = {
+        code: event.code,
+        key: event.key
+      };
+    })
+    input.addEventListener('keyup', () => { input.blur(); })
+    shortcutSettingContainer.appendChild(input);
+  }
+
+  Object
+    .entries(tempShortcut.shortcutModifiers)
+    .forEach(([_, value]) => buildModifierButton(value));
+  buildKeyInput();
+
+  return shortcutSettingContainer;
 };
 
 function showSettingsModal() {
