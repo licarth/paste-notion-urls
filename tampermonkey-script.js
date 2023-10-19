@@ -159,7 +159,7 @@ align-items: center;
       ".notion-record-icon.notranslate"
     )?.textContent;
     const title = peekPreviewParent.querySelector(
-      "div.notion-page-block > div.notranslate"
+      "div.notion-page-block > .notranslate"
     )?.textContent;
     const openAsPageThickLogoElement = peekPreviewParent.querySelector(
       "svg.openAsPageThick"
