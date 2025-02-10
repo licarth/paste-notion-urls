@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Well-formatted Notion URLs to your clipboard
 // @namespace    https://gist.github.com/licarth
-// @version      0.4.3
+// @version      0.4.4
 // @description  Adds a button to copy/paste a nicely formatted link to the current Notion page. Paste it in Slack, GitHub, or anywhere that supports text/helm Clipboard items. Paste as value for markdown version.
 // @author       licarth
 // @match        https://www.notion.so/*
