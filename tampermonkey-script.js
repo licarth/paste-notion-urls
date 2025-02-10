@@ -138,7 +138,7 @@ align-items: center;
   }
 
   function onButtonClickMain(element) {
-    const topBar = element.parentNode.parentNode.parentNode;
+    const topBar = element.parentNode.parentNode.parentNode.parentNode.parentNode;
     const pageTitles =
       topBar.childNodes[topBar.childNodes.length === 3 ? 0 : 1].childNodes;
     const lastPageTitleDiv = pageTitles[pageTitles.length - 1];
