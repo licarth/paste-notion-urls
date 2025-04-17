@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Well-formatted Notion URLs to your clipboard
 // @namespace    https://gist.github.com/licarth
-// @version      0.4.4
+// @version      0.4.5
 // @description  Adds a button to copy/paste a nicely formatted link to the current Notion page. Paste it in Slack, GitHub, or anywhere that supports text/helm Clipboard items. Paste as value for markdown version.
 // @author       licarth
 // @match        https://www.notion.so/*
@@ -161,10 +161,8 @@ align-items: center;
     const title = peekPreviewParent.querySelector(
       "div.notion-page-block > .notranslate"
     )?.textContent;
-    const openAsPageThickLogoElement = peekPreviewParent.querySelector(
-      "svg.openAsPageThick"
-    );
-    const href = openAsPageThickLogoElement.closest("a")?.href;
+    const href = peekPreviewParent.querySelector('[aria-label="Open in full page"]')?.href
+      console.log({peekPreviewParent})
 
     copyLinkToPage(emoji, title, href, textDiv);
   }
