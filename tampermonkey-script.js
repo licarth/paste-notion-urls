@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Well-formatted Notion URLs to your clipboard
 // @namespace    https://gist.github.com/licarth
-// @version      0.4.5
+// @version      0.5.0
 // @description  Adds a button to copy/paste a nicely formatted link to the current Notion page. Paste it in Slack, GitHub, or anywhere that supports text/helm Clipboard items. Paste as value for markdown version.
 // @author       licarth
 // @match        https://www.notion.so/*
+// @match        https://www.notion.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=notion.so
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
@@ -138,17 +139,21 @@ align-items: center;
   }
 
   function onButtonClickMain(element) {
-    const topBar = element.parentNode.parentNode.parentNode.parentNode.parentNode;
-    const pageTitles =
-      topBar.childNodes[topBar.childNodes.length === 3 ? 0 : 1].childNodes;
-    const lastPageTitleDiv = pageTitles[pageTitles.length - 1];
-    const pageEmoji =
-      lastPageTitleDiv.childNodes.length === 1
-        ? null
-        : lastPageTitleDiv.childNodes[0].textContent;
-    const pageTitle = pageEmoji
-      ? lastPageTitleDiv.childNodes[1].textContent
-      : lastPageTitleDiv.textContent;
+    const topbar = document.querySelector(".notion-topbar");
+    const breadcrumb = topbar?.querySelector(".shadow-cursor-breadcrumb");
+    const lastBreadcrumbItem = breadcrumb?.lastElementChild;
+
+    let pageEmoji = null;
+    let pageTitle = "";
+
+    if (lastBreadcrumbItem) {
+      if (lastBreadcrumbItem.children.length > 1) {
+        pageEmoji = lastBreadcrumbItem.children[0].textContent;
+        pageTitle = lastBreadcrumbItem.children[1].textContent;
+      } else {
+        pageTitle = lastBreadcrumbItem.textContent;
+      }
+    }
 
     copyLinkToPage(pageEmoji, pageTitle, window.location.href, textDiv);
   }
@@ -161,8 +166,7 @@ align-items: center;
     const title = peekPreviewParent.querySelector(
       "div.notion-page-block > .notranslate"
     )?.textContent;
-    const href = peekPreviewParent.querySelector('[aria-label="Open in full page"]')?.href
-      console.log({peekPreviewParent})
+    const href = peekPreviewParent.querySelector('[aria-label="Open in full page"]')?.href;
 
     copyLinkToPage(emoji, title, href, textDiv);
   }
