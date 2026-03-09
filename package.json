@@ -1,0 +1,19 @@
+{
+  "name": "paste-notion-urls",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Copy & paste Notion urls in Slack, GitHub, or any tool supporting markdown urls.",
+  "main": "tampermonkey-script.js",
+  "scripts": {
+    "save-auth": "node scripts/save-auth.js",
+    "test": "npx playwright test tests/extension.spec.js",
+    "test:diagnose": "mkdir -p test-results && npx playwright test tests/diagnose-dom.spec.js --reporter=list"
+  },
+  "keywords": [],
+  "author": "licarth",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "playwright": "^1.58.2"
+  }
+}
