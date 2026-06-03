@@ -4,8 +4,7 @@
 // @version      0.5.0
 // @description  Adds a button to copy/paste a nicely formatted link to the current Notion page. Paste it in Slack, GitHub, or anywhere that supports text/helm Clipboard items. Paste as value for markdown version.
 // @author       licarth
-// @match        https://www.notion.so/*
-// @match        https://www.notion.com/*
+// @match        https://*.notion.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=notion.so
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
